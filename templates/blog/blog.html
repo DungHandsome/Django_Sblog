@@ -3,31 +3,52 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
-<div class="header mb-5 mt-3">
+{% if messages %}
+<div class="container alert alert-success" role="alert">
+    {% for message in messages %}
+    {{ message }}
+    {% endfor %}
+</div>
+{% endif %}
+<div class="header mt-3">
     <div class="text-center">
         <h1>Sblog</h1>
     </div>
 </div>
-<div class="container">
-        {% for post in Posts %}
-            <div class="box">
+
+{% if user.is_authenticated %}
+<div class="container mt-5">
+    {% for post in Posts %}
+        <div class="box">
+            
+            <a href="{% url 'post' post.id %}">
                 
-                <a href="{% url 'post' post.id %}">
-                    
-                    <h4>{{ post.title }}</h4>
-                </a>
-                <p class="text-secondary">{{post.time|date:"d-m-Y"}}</p>
-                {% if post.content|length > 25 %}
-                    <p class="text-secondary">{{ post.content|slice:"25" }}...</a></p>
-                {% else %}
-                    <p class="text-secondary">{{ post.content }}</p>
-                {% endif %}
-                
-                
-            </div>
-            <hr>
-        {% endfor %}
-    </div>
+                <h4>{{ post.title }}</h4>
+            </a>
+            <p class="text-secondary">{{post.time|date:"d-m-Y"}}</p>
+            {% if post.content|length > 25 %}
+                <p class="text-secondary">{{ post.content|slice:"25" }}...</a></p>
+            {% else %}
+                <p class="text-secondary">{{ post.content }}</p>
+            {% endif %}
+            
+            
+        </div>
+        <hr>
+    {% endfor %}
 </div>
+</div>
+{% else %}
+<div class="text-center mt-3">
+    <h5>Please login if you want to access this blog!</h5>
+    <a href="{% url 'login' %}" class="btn btn-primary">Login</a>
+</div>
+{% endif %}
+
+
+
+
+
+
 
 {% endblock %}
