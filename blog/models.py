@@ -7,3 +7,4 @@ class BlogPost(models.Model):
     title = models.CharField(max_length=100)
     content = models.TextField()
     time = models.DateTimeField(auto_now_add=True)
+    image = models.ImageField(null=True)

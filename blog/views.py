@@ -17,16 +17,20 @@ def post(request, id):
 
 @login_required
 def form(request):
-    if request.method == 'POST':
-        if request.POST.get('author') and request.POST.get('title') and request.POST.get('content'):
-            post=BlogPost()
-            post.author = request.POST.get('author')
-            post.title= request.POST.get('title')
-            post.content= request.POST.get('content')
-            post.save()
-            return render(request, 'blog/form.html')  
-    else:
-        return render(request,'blog/form.html')
+	if request.method == 'POST':
+		if request.POST.get('author') and request.POST.get('title') and request.POST.get('content') and request.POST.get('image'):
+			post=BlogPost()
+			post.author = request.POST.get('author')
+			post.title= request.POST.get('title')
+			post.content= request.POST.get('content')
+			post.image = request.POST.get('image')
+			post.save()
+			messages.success(request, "Posting successful." )
+			return redirect("blog")
+			
+	else:
+		return render(request,'blog/form.html')
+
 
 
 
