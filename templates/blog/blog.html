@@ -1,6 +1,7 @@
 {% extends '../base.html' %}
 {% block title %}Blog{% endblock %}
 {% load crispy_forms_tags %}
+{% load static %}
 
 {% block content %}
 {% if messages %}
@@ -10,40 +11,54 @@
     {% endfor %}
 </div>
 {% endif %}
-<div class="header mt-3">
-    <div class="text-center">
-        <h1>Sblog</h1>
+<div class="all">
+    <div class="header mt-3 container">
+        <img src="{% static 'image/banner2.png' %}" alt="" style="width: 100%;">
     </div>
+    
+    {% if user.is_authenticated %}
+    <div class="container mt-5">
+        {% for post in Posts %}
+            <div class="box" style="background-color: #F5F5F5; padding: 10px 10px 10px 10px;">
+                <div class="row">
+                    <div class="col-md-4">
+                        {% if post.image %}
+                            <img src="{{ post.image.url }}" width="100%">
+                        {% endif %}
+                    </div>
+                    <div class="col-md-8">
+                        <a href="{% url 'post' post.id %}">
+                            <h4 style="text-align: center; text-decoration: none;">{{ post.title }}</h4>
+                        </a>
+                        
+                        {% if post.content|length > 100 %}
+                            <p class="text-secondary">{{ post.content|slice:"100" }}...</a></p>
+                        {% else %}
+                            <p class="text-secondary">{{ post.content }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            <div class="outbox" style="padding: 10px 10px 1px 10px; background-color: #E0E5EF;">
+                <div class="row">
+                    <div class="col-md-6">
+                        <p class="text-secondary">{{post.time|date:"d-m-Y"}}</p>
+                    </div>
+                </div>
+                
+            </div>
+            <hr>
+        {% endfor %}
+    </div>
+    </div>
+    {% else %}
+    <div class="text-center mt-3">
+        <h5>Please login if you want to access this blog!</h5>
+        <a href="{% url 'login' %}" class="btn btn-primary">Login</a>
+    </div>
+    {% endif %}
 </div>
 
-{% if user.is_authenticated %}
-<div class="container mt-5">
-    {% for post in Posts %}
-        <div class="box">
-            
-            <a href="{% url 'post' post.id %}">
-                
-                <h4>{{ post.title }}</h4>
-            </a>
-            <p class="text-secondary">{{post.time|date:"d-m-Y"}}</p>
-            {% if post.content|length > 25 %}
-                <p class="text-secondary">{{ post.content|slice:"25" }}...</a></p>
-            {% else %}
-                <p class="text-secondary">{{ post.content }}</p>
-            {% endif %}
-            
-            
-        </div>
-        <hr>
-    {% endfor %}
-</div>
-</div>
-{% else %}
-<div class="text-center mt-3">
-    <h5>Please login if you want to access this blog!</h5>
-    <a href="{% url 'login' %}" class="btn btn-primary">Login</a>
-</div>
-{% endif %}
 
 
 

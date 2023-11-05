@@ -13,7 +13,8 @@
             <img src="{{post.image.url}}" width="500px" />
         {% endif %}
     </div>
-    <p>Author: {{ post.author }}</p>
+    <p>Tác giả: {{ post.author }}</p>
+    <p>Bộ: {{ post.botruyen }}</p>
     <p>{{ post.content|linebreaks }}</p>
 </div>
 {% endblock %}

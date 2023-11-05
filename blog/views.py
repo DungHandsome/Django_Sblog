@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .models import BlogPost
+from .models import BlogPost, ListTruyen
 from .forms import NewUserForm
 from django.contrib.auth import login, authenticate, logout
 from django.contrib import messages
@@ -7,13 +7,21 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required
 # Create your views here.
 def blog(request):
-    Data = {'Posts': BlogPost.objects.all().order_by('-time')}
-    return render(request, 'blog/blog.html', Data)
+	Data = BlogPost.objects.all().order_by('-time')
+	Databy2 = ListTruyen.objects.all().order_by('-time')
+	all = {
+		'Posts': Data,
+		'botruyen': Databy2,
+	}
+	return render(request, 'blog/blog.html', all)
 
 @login_required
 def post(request, id):
-    post = BlogPost.objects.get(id=id)
-    return render(request, 'blog/post.html', {'post': post})
+	post = BlogPost.objects.get(id=id)
+	all = {
+		'post': post,
+	}
+	return render(request, 'blog/post.html', all)
 
 @login_required
 def form(request):
