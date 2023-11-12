@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from .models import BlogPost, ListTruyen
 from .forms import NewUserForm
 from django.contrib.auth import login, authenticate, logout
+from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required
@@ -25,10 +26,16 @@ def post(request, id):
 
 @login_required
 def form(request):
+	user = request.user
+	listtruyen = ListTruyen.objects.filter(author = user)
 	if request.method == 'POST':
+		
 		if request.POST.get('author') and request.POST.get('title') and request.POST.get('content') and request.POST.get('image'):
+			listtruyened = request.POST.get('author')
+			listtruyenpost = ListTruyen.objects.get(name=listtruyened)
 			post=BlogPost()
-			post.author = request.POST.get('author')
+			post.botruyen = listtruyenpost
+			post.author = user
 			post.title= request.POST.get('title')
 			post.content= request.POST.get('content')
 			post.image = request.POST.get('image')
@@ -37,7 +44,7 @@ def form(request):
 			return redirect("blog")
 			
 	else:
-		return render(request,'blog/form.html')
+		return render(request,'blog/form.html', {'listtruyen': listtruyen})
 
 
 

@@ -10,9 +10,10 @@
 
     <div class="mb-3">
         <label for="author_field" class="form-label">Author</label>
-        <select class="form-select" aria-label="Default select example" name="author">
-            <option selected>Anonymous</option>
-            <option value="{{ user.get_username }}">{{ user.get_username }}</option>
+        <select class="form-select" aria-label="Default select example" name="author" required>
+            {% for listtruyen in listtruyen %}
+            <option value="{{ listtruyen.name }}">{{ listtruyen.name }}</option>
+            {% endfor %}
           </select>
       </div>
       <div class="mb-3">
