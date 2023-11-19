@@ -9,7 +9,7 @@
     {% csrf_token %}
 
     <div class="mb-3">
-        <label for="author_field" class="form-label">Author</label>
+        <label for="author_field" class="form-label">Bộ truyện</label>
         <select class="form-select" aria-label="Default select example" name="author" required>
             {% for listtruyen in listtruyen %}
             <option value="{{ listtruyen.name }}">{{ listtruyen.name }}</option>
